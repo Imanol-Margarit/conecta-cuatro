@@ -1,11 +1,11 @@
 // TODO: importa Columna, Ficha, calcularGanador, tableroLleno y FILAS
-
+import Columna from "./Columna"
 // Componente: el tablero azul con 7 columnas y el texto de estado.
 // Props:
 //   turno   -> 'R' o 'A' (paso 3)
 //   tablero -> array de 7 columnas (paso 1)
 //   onJugar -> función que recibe el tablero nuevo (paso 2)
-function Tablero(/* TODO (paso 1): recibe las props */) {
+function Tablero({ tablero }) {
   // TODO (paso 4): resultado, empate y partida terminada
 
   // TODO (paso 2): elegirColumna(col)
@@ -21,7 +21,9 @@ function Tablero(/* TODO (paso 1): recibe las props */) {
     <>
       <div className="estado">{/* TODO (paso 3) */}</div>
       <div className="tablero">
-        {/* TODO (paso 1): una Columna por cada columna del tablero */}
+        {tablero.map((fichas, col) => (
+          <Columna key={col} fichas={fichas} />
+        ))}
       </div>
     </>
   )
