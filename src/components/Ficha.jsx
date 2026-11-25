@@ -5,7 +5,7 @@
 //   mini     -> true para la ficha pequeña del texto de estado (paso 3)
 //
 // Clases CSS disponibles: "ficha", "roja", "amarilla", "ganadora", "mini"
-function Ficha({valor}) {
+function Ficha({valor, mini}) {
   let className = 'ficha'
   if (valor === 'R') {
     className += ' roja'
@@ -13,7 +13,11 @@ function Ficha({valor}) {
     className += ' amarilla'
   }
 
-  return <div className="ficha"></div>
+  if (mini) {
+    className += ' mini'
+  }
+
+  return <div className={className}></div>
 }
 
 export default Ficha
