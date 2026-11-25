@@ -3,8 +3,6 @@ import Tablero from './Tablero'
 import { useState } from 'react'
 import { COLUMNAS } from '../utils/calcularGanador'
 
-// TODO (paso 1): constante TABLERO_VACIO -> array de COLUMNAS arrays vacíos
-//   Cuidado: cada columna debe ser un array distinto (no el mismo repetido)
 const TABLERO_VACIO = Array.from({ length: COLUMNAS }, () => [])
 // Componente principal: historial y turnos (igual que Game en la parte 1).
 function Partida() {
@@ -14,15 +12,15 @@ function Partida() {
 
   // TODO (paso 3): valores derivados turno ('R' en movimientos pares) y tableroActual
 
-  // TODO (paso 2): función jugar(nuevoTablero), igual que handlePlay
-
+  function jugar(nuevoTablero) {
+    setHistorial([...historial, nuevoTablero])
+  }
   // TODO (paso 5): lista de movimientos "Ir al movimiento #N (columna C)"
 
   return (
     <div className="partida">
       <div>
-        <Tablero tablero={tableroActual}/>
-        {/* TODO: pasa las props turno, tablero y onJugar */}
+        <Tablero tablero={tableroActual} onJugar={jugar}/>
       </div>
       <div className="historial">{/* TODO (paso 5): <ol> con los movimientos */}</div>
     </div>
