@@ -1,13 +1,18 @@
 // TODO: importa Columna, Ficha, calcularGanador, tableroLleno y FILAS
 import Columna from "./Columna"
 import Ficha from './Ficha'
-import { FILAS } from '../utils/calcularGanador'
+import {calcularGanador, tableroLleno, FILAS } from '../utils/calcularGanador'
+
+function nombreColor(color) {
+  return color === 'R' ? 'Rojo' : 'Amarillo'
+}
 
 function Tablero({turno, tablero, onJugar }) {
-  // TODO (paso 4): resultado, empate y partida terminada
+  const resultado = calcularGanador(tablero)
+  const empate = !resultado && tableroLleno(tablero)
+  const terminada = resultado !== null || empate
+  const ganadoras = resultado ? resultado.linea : []
 
-  const nombreTurno = turno === 'R' ? 'Rojo' : 'Amarillo'
-  
   function elegirColumna(col) {
     const columnaActual = tablero[col]
     if (columnaActual.length >= FILAS) {
@@ -19,15 +24,42 @@ function Tablero({turno, tablero, onJugar }) {
     onJugar(copia)
   }
 
-  // TODO (paso 4): "Ganador: (ficha) Amarillo" o "Empate"
+  let estado
+  if (resultado) {
+    estado = (
+      <>
+        Ganador: <Ficha valor={resultado.ganador} mini /> {nombreColor(resultado.ganador)}
+      </>
+    )
+  } else if (empate) {
+    estado = 'Empate'
+  } else {
+    estado = (
+      <>
+        Turno de: <Ficha valor={turno} mini /> {nombreColor(turno)}
+      </>
+    )
+  }
 
   return (
     <>
-      <div className="estado">Turno de: <Ficha valor={turno} mini /> {nombreTurno}</div>
+      <div className="estado">{estado}</div>
       <div className="tablero">
-        {tablero.map((fichas, col) => (
-          <Columna key={col} fichas={fichas} onElegir={() => elegirColumna(col)} desactivada={fichas.length >= FILAS} />
-        ))}
+        {tablero.map((fichas, col) => {
+          const filasGanadoras = ganadoras
+            .filter(([c]) => c === col)
+            .map(([, f]) => f)
+
+          return (
+            <Columna
+              key={col}
+              fichas={fichas}
+              onElegir={() => elegirColumna(col)}
+              desactivada={terminada || fichas.length >= FILAS}
+              ganadoras={filasGanadoras}
+            />
+          )
+        })}
       </div>
     </>
   )

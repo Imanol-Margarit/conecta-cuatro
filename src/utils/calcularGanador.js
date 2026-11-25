@@ -21,15 +21,32 @@ const DIRECCIONES = [
   [1, -1],
 ]
 
-// TODO (paso 4): recorre todas las posiciones del tablero. Para cada ficha,
-// comprueba en cada dirección si las 3 posiciones siguientes tienen el mismo
-// color. Si es así, devuelve { ganador: color, linea: [[col, fila] x 4] }.
-// Si no hay ganador, devuelve null.
 export function calcularGanador(tablero) {
+  for (let col = 0; col < COLUMNAS; col++) {
+    for (let fila = 0; fila < FILAS; fila++) {
+      const color = ficha(tablero, col, fila)
+      if (!color) {
+        continue
+      }
+
+      for (const [avanceCol, avanceFila] of DIRECCIONES) {
+        const linea = []
+        for (let k = 0; k < 4; k++) {
+          linea.push([col + avanceCol * k, fila + avanceFila * k])
+        }
+
+        const todasIguales = linea.every(
+          ([c, f]) => ficha(tablero, c, f) === color
+        )
+        if (todasIguales) {
+          return { ganador: color, linea }
+        }
+      }
+    }
+  }
   return null
 }
 
-// TODO (paso 4): devuelve true si todas las columnas están llenas
 export function tableroLleno(tablero) {
-  return false
+  return tablero.every((columna) => columna.length === FILAS)
 }
